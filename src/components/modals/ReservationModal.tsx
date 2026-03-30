@@ -1,6 +1,7 @@
+// src/components/modals/ReservationModal.tsx
 import { useState } from 'react';
 import { createReservation } from '../../services/reservations';
-import { GroupReservation } from './GroupReservation'; // Importamos o formulário detalhado
+import { GroupReservation } from './GroupReservation'; 
 
 interface ReservationModalProps {
   isOpen: boolean;
@@ -11,7 +12,7 @@ export function ReservationModal({ isOpen, onClose }: ReservationModalProps) {
   const [tipoReserva, setTipoReserva] = useState<'carta' | 'grupo'>('carta');
   const [enviado, setEnviado] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null); // Agora vamos usar o 'error'!
 
   const [formData, setFormData] = useState({
     nome: '',
@@ -23,18 +24,14 @@ export function ReservationModal({ isOpen, onClose }: ReservationModalProps) {
 
   if (!isOpen) return null;
 
-  // --- SE FOR GRUPO, MOSTRA O FORMULÁRIO GRANDE ---
   if (tipoReserva === 'grupo') {
     return (
       <div className="fixed inset-0 z-[100] overflow-y-auto bg-[#f4f2ee]">
-        {/* Passamos uma função para o botão VOLTAR do GroupReservation 
-            para ele voltar a mostrar o seletor "À Carta" */}
         <GroupReservation onClose={() => setTipoReserva('carta')} />
       </div>
     );
   }
 
-  // --- SE FOR À CARTA, MOSTRA O FORMULÁRIO SIMPLES ---
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -54,7 +51,7 @@ export function ReservationModal({ isOpen, onClose }: ReservationModalProps) {
       });
       setEnviado(true);
     } catch (err) {
-      setError('Erro ao enviar reserva.');
+      setError('Erro ao enviar reserva. Tente novamente.');
     } finally {
       setIsSubmitting(false);
     }
@@ -74,8 +71,8 @@ export function ReservationModal({ isOpen, onClose }: ReservationModalProps) {
             </div>
 
             <div className="flex gap-2 justify-center mb-6">
-              <button onClick={() => setTipoReserva('carta')} className="bg-brand-green text-white px-4 py-1 text-[10px] font-bold uppercase border-b-4 border-black/20">À Carta</button>
-              <button onClick={() => setTipoReserva('grupo')} className="bg-brand-green/40 text-white px-4 py-1 text-[10px] font-bold uppercase hover:bg-brand-green/60 transition-colors">Grupo</button>
+              <button type="button" onClick={() => setTipoReserva('carta')} className="bg-brand-green text-white px-4 py-1 text-[10px] font-bold uppercase border-b-4 border-black/20">À Carta</button>
+              <button type="button" onClick={() => setTipoReserva('grupo')} className="bg-brand-green/40 text-white px-4 py-1 text-[10px] font-bold uppercase hover:bg-brand-green/60 transition-colors">Grupo</button>
             </div>
 
             <form className="space-y-4" onSubmit={handleSubmit}>
@@ -101,7 +98,15 @@ export function ReservationModal({ isOpen, onClose }: ReservationModalProps) {
                 <label className="text-[10px] uppercase font-bold text-brand-red">Hora</label>
                 <input required name="hora" value={formData.hora} onChange={handleInputChange} type="time" className="w-full p-2 border border-brand-red/20 text-xs focus:outline-brand-red bg-white" />
               </div>
-              <button type="submit" disabled={isSubmitting} className="w-full bg-[#63101d] text-white py-3 mt-4 font-bold uppercase tracking-widest">
+
+              {/* MUDANÇA AQUI: Agora exibimos o erro se ele existir! */}
+              {error && (
+                <p className="text-red-600 text-[10px] font-bold text-center uppercase tracking-wider">
+                  {error}
+                </p>
+              )}
+
+              <button type="submit" disabled={isSubmitting} className="w-full bg-[#63101d] text-white py-3 mt-4 font-bold uppercase tracking-widest disabled:opacity-50">
                 {isSubmitting ? 'A Enviar...' : 'Reservar Mesa'}
               </button>
             </form>
