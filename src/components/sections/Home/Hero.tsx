@@ -6,35 +6,36 @@ interface HeroProps {
 }
 
 export function Hero({ onOpenReservation }: HeroProps) {
-  // Definição das fontes
   const allura = { fontFamily: "'Allura', cursive" };
   const cinzel = { fontFamily: "'Cinzel', serif" };
 
   return (
     <section 
-      className="relative w-full h-[90vh] flex items-end justify-start px-12 md:px-32 lg:px-48 pb-20 md:pb-32"
+      /* Reduzi a altura para 75vh e ajustei os paddings para ser mais compacto */
+      className="relative w-full h-[75vh] flex items-end justify-start px-8 md:px-24 lg:px-32 pb-16 md:pb-24"
       style={{
         backgroundImage: `url('${heroBg}')`,
         backgroundSize: 'cover',
         backgroundPosition: 'center'
       }}
     >
-      <div className="absolute inset-0 bg-black/25"></div>
+      <div className="absolute inset-0 bg-black/30"></div>
 
-      <div className="relative z-10 flex flex-col items-start gap-8 max-w-4xl">
+      <div className="relative z-10 flex flex-col items-start gap-6 max-w-3xl">
         
-        {/* Título com a fonte Allura aplicada aqui */}
+        {/* Título: Reduzido ligeiramente para 52px para equilibrar com a nova altura */}
         <h1 
           style={allura}
-          className="text-white text-[56px] leading-none drop-shadow-lg"
+          className="text-white text-[48px] md:text-[52px] leading-none drop-shadow-xl"
         >
           O melhor do ribatejo
         </h1>
         
+        {/* Botão: Padding e fonte mais contidos */}
         <button 
           onClick={onOpenReservation}
           style={cinzel}
-          className="bg-[#05402d] text-white text-[22px] px-10 py-4 tracking-[0.1em] uppercase hover:bg-[#043324] transition-all shadow-2xl"
+          className="bg-[#05402d] text-white text-[18px] md:text-[20px] px-8 py-3 tracking-[0.1em] uppercase hover:bg-[#043324] transition-all shadow-2xl rounded-sm"
         >
           Marcações
         </button>

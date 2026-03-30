@@ -1,4 +1,11 @@
+// src/components/sections/Home/Reviews.tsx
+
+import iconeCarta from "../../../assets/home/reviews/icone/icone-da-parte-a-carta.png";
+
 export function Reviews() {
+  const montserrat = { fontFamily: "'Montserrat', sans-serif" };
+  const cinzel = { fontFamily: "'Cinzel', serif" };
+
   const avaliacoes = [
     {
       nome: "Fernando L",
@@ -34,75 +41,111 @@ export function Reviews() {
 
   return (
     <section className="w-full bg-white py-24 px-4 flex justify-center relative overflow-hidden">
-      {/* Carimbo "A Cernelha" à esquerda */}
-      <div className="absolute left-10 top-10 hidden xl:block opacity-20">
-        <div className="w-40 h-40 rounded-full border border-black flex items-center justify-center p-4 rotate-[-15deg]">
-          <span className="text-black text-center text-xs font-serif italic">
-            Restaurante<br/>A Cernelha
-          </span>
-        </div>
+      
+      {/* SELO CERNALHA - POSICIONAMENTO CORRIGIDO
+          - Se quiseres subir MAIS, diminui o valor de 420px (ex: 380px).
+          - Se quiseres descer, aumenta (ex: 450px).
+      */}
+      <div 
+        className="absolute hidden xl:block z-20 pointer-events-none"
+        style={{ 
+          left: 'calc(50% - 640px)', 
+          top: '50px', 
+          transform: 'translateX(-50%) rotate(-15deg)' 
+        }}
+      >
+        <img 
+          src={iconeCarta} 
+          alt="Selo Cernelha" 
+          className="w-64 h-auto"
+        />
       </div>
 
-      <div className="max-w-7xl w-full">
-        {/* Cabeçalho */}
-        <div className="text-center mb-16">
-          <span className="text-brand-green font-bold tracking-[0.3em] uppercase text-[10px]">
-            Reviews
+      <div className="max-w-7xl w-full z-10">
+        
+        {/* CABEÇALHO */}
+        <div className="text-center mb-16 flex flex-col items-center">
+          <span 
+            style={{ ...montserrat, fontSize: '11px' }} 
+            className="text-[#05402d] font-bold tracking-[0.6em] uppercase mb-4"
+          >
+            R E V I E W S
           </span>
-          <h2 className="text-brand-red text-4xl md:text-5xl font-light tracking-wide uppercase mt-2 mb-6">
+          
+          <h2 
+            style={{ ...cinzel, fontSize: '34px' }} 
+            className="text-[#69151f] leading-tight uppercase mt-2 mb-6"
+          >
             Comentários
           </h2>
-          <div className="flex items-center justify-center gap-4 mb-6">
-            <div className="w-16 h-[1px] bg-brand-green/30"></div>
+
+          <div className="flex items-center justify-center gap-6 mb-8">
+            <div className="w-12 h-[1px] bg-[#05402d]"></div>
             <span className="text-2xl">🐂</span>
-            <div className="w-16 h-[1px] bg-brand-green/30"></div>
+            <div className="w-12 h-[1px] bg-[#05402d]"></div>
           </div>
-          <p className="text-brand-red/80 italic text-sm">
+
+          <p 
+            style={{ ...montserrat, fontSize: '11px' }} 
+            className="text-[#69151f] font-medium tracking-wide uppercase"
+          >
             Alguns comentários e avaliações deixados pelos nossos clientes.
           </p>
         </div>
 
-        {/* Grid de Reviews */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {/* GRID DE REVIEWS */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 relative">
           {avaliacoes.map((item, index) => (
-            <div key={index} className="bg-[#f4f2ee] p-8 flex flex-col items-center text-center rounded-sm shadow-sm h-full">
-              {/* Avatar ou Inicial */}
+            <div 
+              key={index} 
+              style={{ backgroundColor: '#f1efea' }} 
+              className="p-8 flex flex-col items-center text-center rounded-lg shadow-sm h-full"
+            >
               <div className="mb-6">
                 {item.img ? (
-                  <img src={item.img} alt={item.nome} className="w-16 h-16 rounded-full object-cover shadow-md" />
+                  <img src={item.img} alt={item.nome} className="w-16 h-16 rounded-full object-cover shadow-sm border-2 border-white" />
                 ) : (
-                  <div className={`w-16 h-16 rounded-full ${item.corFundo} flex items-center justify-center text-white text-2xl font-bold shadow-md`}>
+                  <div className={`w-16 h-16 rounded-full ${item.corFundo} flex items-center justify-center text-white text-2xl font-bold shadow-sm`}>
                     {item.inicial}
                   </div>
                 )}
               </div>
 
-              {/* Estrelas */}
-              <div className="flex gap-1 mb-6 text-yellow-500 text-sm">
+              <div className="flex gap-1 mb-6 text-yellow-500 text-xs">
                 {[...Array(5)].map((_, i) => (
                   <span key={i}>{i < item.estrelas ? "★" : "☆"}</span>
                 ))}
               </div>
 
-              {/* Texto do Comentário */}
-              <p className="text-brand-green/80 text-[13px] leading-relaxed mb-8 flex-1">
+              <p 
+                style={{ ...montserrat, fontSize: '10px' }} 
+                className="text-[#05402d] leading-relaxed mb-8 flex-1 italic"
+              >
                 "{item.texto}"
               </p>
 
-              {/* Assinatura */}
               <div className="mt-auto">
-                <h4 className="text-brand-red font-bold text-sm uppercase tracking-tight">{item.nome}</h4>
-                <p className="text-brand-green/60 text-[10px] uppercase tracking-widest mt-1">{item.tipo}</p>
+                <h4 
+                  style={{ ...montserrat, fontSize: '11px' }} 
+                  className="text-[#69151f] font-bold uppercase tracking-tight"
+                >
+                  {item.nome}
+                </h4>
+                <p 
+                  style={{ ...montserrat, fontSize: '11px' }} 
+                  className="text-[#69151f] opacity-70 uppercase tracking-widest mt-1"
+                >
+                  {item.tipo}
+                </p>
               </div>
             </div>
           ))}
         </div>
 
-        {/* Paginação (Visual) */}
-        <div className="flex justify-center gap-2 mt-12">
-          <div className="w-2 h-2 rounded-full bg-brand-red"></div>
-          <div className="w-2 h-2 rounded-full bg-brand-red/20"></div>
-          <div className="w-2 h-2 rounded-full bg-brand-red/20"></div>
+        <div className="flex justify-center gap-3 mt-12">
+          <div className="w-2 h-2 rounded-full bg-[#69151f]"></div>
+          <div className="w-2 h-2 rounded-full bg-[#69151f]/20"></div>
+          <div className="w-2 h-2 rounded-full bg-[#69151f]/20"></div>
         </div>
       </div>
     </section>
