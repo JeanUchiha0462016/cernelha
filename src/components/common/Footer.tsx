@@ -1,17 +1,18 @@
+// src/components/sections/Home/Footer.tsx
+
 export function Footer() {
   return (
     <footer className="w-full bg-black text-white">
       {/* 1. SEÇÃO DO MAPA (Sempre Colorido) */}
       <div className="w-full h-[400px] bg-gray-200">
         <iframe 
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3091.973418520288!2d-8.694646723437435!3d39.175373371665975!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd18e894e71e2a2d%3A0x4c2e3942a44a240f!2sA%20Cernelha!5e0!3m2!1spt-PT!2spt!4v1710000000000!5m2!1spt-PT!2spt" 
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3089.6200676451!2d-8.6946654!3d39.1378888!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd18eb5f69c5e53b%3A0x6b45a0e0600f954!2sRestaurante%20A%20Cernelha!5e0!3m2!1spt-PT!2spt!4v1710000000000!5m2!1spt-PT!2spt" 
           width="100%" 
           height="100%" 
           style={{ border: 0 }} 
           allowFullScreen 
           loading="lazy" 
           referrerPolicy="no-referrer-when-downgrade"
-          /* Removidas as classes grayscale e contrast para garantir cor total */
           className="w-full h-full"
         ></iframe>
       </div>
@@ -28,12 +29,30 @@ export function Footer() {
             <p className="text-gray-400 text-sm leading-relaxed max-w-xs mx-auto md:mx-0">
               Restaurante tradicional ribatejano, com especialidade em grelhados no carvão e vinhos!
             </p>
-            <div className="flex justify-center md:justify-start gap-4">
-              <a href="#" className="hover:text-brand-green transition-colors">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
+            
+            {/* REDES SOCIAIS ATUALIZADAS */}
+            <div className="flex justify-center md:justify-start gap-6">
+              <a 
+                href="https://www.instagram.com/restauranteacernelha?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-gray-400 hover:text-white transition-colors"
+              >
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <rect width="20" height="20" x="2" y="2" rx="5" ry="5"/>
+                  <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+                  <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/>
+                </svg>
               </a>
-              <a href="#" className="hover:text-brand-green transition-colors">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+              <a 
+                href="https://www.facebook.com/share/17J9ERy4nD/?mibextid=wwXIfr" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-gray-400 hover:text-white transition-colors"
+              >
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
+                </svg>
               </a>
             </div>
           </div>
@@ -75,7 +94,7 @@ export function Footer() {
             <ul className="space-y-4 text-sm text-gray-300 font-light">
               <li className="hover:text-white cursor-pointer transition-colors">Política de cookies</li>
               <li className="hover:text-white cursor-pointer transition-colors">Termos e Condições</li>
-              <li className="font-bold text-white hover:text-brand-green cursor-pointer transition-colors">Política de privacidade</li>
+              <li className="font-bold text-white hover:text-[#05402d] cursor-pointer transition-colors">Política de privacidade</li>
             </ul>
           </div>
 

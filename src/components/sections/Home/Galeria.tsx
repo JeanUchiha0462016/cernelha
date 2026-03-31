@@ -1,19 +1,20 @@
 // src/components/sections/Home/Galeria.tsx
 
-// Importação com a extensão correta .jpeg
+// Importação das fotos
 import foto1 from "../../../assets/home/galeria/fotos/1.jpeg";
 import foto2 from "../../../assets/home/galeria/fotos/2.jpeg";
 import foto3 from "../../../assets/home/galeria/fotos/3.jpeg";
 import foto4 from "../../../assets/home/galeria/fotos/4.jpeg";
 import foto5 from "../../../assets/home/galeria/fotos/5.jpeg";
 import foto6 from "../../../assets/home/galeria/fotos/6.jpeg";
+import imgTouro from "../../../assets/home/touro/tourro.png"; // Importação do Touro Oficial
 
 export function Galeria() {
   const montserrat = { fontFamily: "'Montserrat', sans-serif" };
   const cinzel = { fontFamily: "'Cinzel', serif" };
 
   return (
-    <section className="w-full bg-[#f1efea] py-24 px-4 flex justify-center">
+    <section id="galeria" className="w-full bg-[#f1efea] py-24 px-4 flex justify-center">
       <div className="max-w-6xl w-full">
         
         {/* CABEÇALHO */}
@@ -32,9 +33,16 @@ export function Galeria() {
             O Nosso Espaço
           </h2>
           
+          {/* DIVISOR COM O TOURO OFICIAL */}
           <div className="flex items-center justify-center gap-6 mb-6">
             <div className="w-16 h-[1px] bg-[#05402d]"></div>
-            <span className="text-2xl">🐂</span>
+            <div className="px-1">
+              <img 
+                src={imgTouro} 
+                alt="Touro Cernelha" 
+                className="h-8 w-auto object-contain mix-blend-multiply" 
+              />
+            </div>
             <div className="w-16 h-[1px] bg-[#05402d]"></div>
           </div>
 
@@ -46,10 +54,10 @@ export function Galeria() {
           </p>
         </div>
 
-        {/* LAYOUT DE MOSAICO CORRIGIDO */}
+        {/* LAYOUT DE MOSAICO */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           
-          {/* LADO ESQUERDO: Quadrado Grande (1) em cima, Pequenas (4,5) em baixo */}
+          {/* LADO ESQUERDO */}
           <div className="md:col-span-2 flex flex-col gap-4">
             <div className="aspect-square overflow-hidden shadow-lg group">
               <img 
@@ -69,7 +77,7 @@ export function Galeria() {
             </div>
           </div>
 
-          {/* LADO DIREITO: Pequenas (2,3) em cima, Quadrado Grande (6) em baixo */}
+          {/* LADO DIREITO */}
           <div className="md:col-span-2 flex flex-col gap-4">
             <div className="grid grid-cols-2 gap-4">
               <div className="aspect-square overflow-hidden shadow-md group">
@@ -80,7 +88,6 @@ export function Galeria() {
               </div>
             </div>
 
-            {/* FOTO 6: Agora é um quadrado perfeito igual à Foto 1 */}
             <div className="aspect-square overflow-hidden shadow-lg group">
               <img 
                 src={foto6} 

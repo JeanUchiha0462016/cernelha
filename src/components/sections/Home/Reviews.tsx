@@ -1,8 +1,15 @@
 // src/components/sections/Home/Reviews.tsx
-
+import { useState, useEffect, useRef } from 'react';
 import iconeCarta from "../../../assets/home/reviews/icone/icone-da-parte-a-carta.png";
+import imgTouro from "../../../assets/home/touro/tourro.png";
 
 export function Reviews() {
+  const [activeIndex, setActiveIndex] = useState(1); 
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [isDown, setIsDown] = useState(false);
+  const [startX, setStartX] = useState(0);
+  const [scrollLeft, setScrollLeft] = useState(0);
+
   const montserrat = { fontFamily: "'Montserrat', sans-serif" };
   const cinzel = { fontFamily: "'Cinzel', serif" };
 
@@ -39,115 +46,163 @@ export function Reviews() {
     }
   ];
 
+  // CENTRALIZAÇÃO INICIAL (MOBILE)
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (scrollRef.current && window.innerWidth < 768) {
+        const container = scrollRef.current;
+        const targetChild = container.children[1] as HTMLElement; // Foca no 2º
+        if (targetChild) {
+          const scrollPos = targetChild.offsetLeft - (container.offsetWidth / 2) + (targetChild.offsetWidth / 2);
+          container.scrollTo({ left: scrollPos, behavior: 'smooth' });
+        }
+      }
+    }, 600);
+    return () => clearTimeout(timer);
+  }, []);
+
+  const handleScroll = () => {
+    if (!scrollRef.current || isDown) return;
+    const container = scrollRef.current;
+    const center = container.scrollLeft + container.offsetWidth / 2;
+    
+    let closestIndex = 0;
+    let minDistance = Infinity;
+
+    Array.from(container.children).forEach((child, i) => {
+      const childCenter = (child as HTMLElement).offsetLeft + (child as HTMLElement).offsetWidth / 2;
+      const distance = Math.abs(center - childCenter);
+      if (distance < minDistance) {
+        minDistance = distance;
+        closestIndex = i;
+      }
+    });
+    setActiveIndex(closestIndex);
+  };
+
+  const handleMouseDown = (e: React.MouseEvent) => {
+    setIsDown(true);
+    if (scrollRef.current) {
+      setStartX(e.pageX - scrollRef.current.offsetLeft);
+      setScrollLeft(scrollRef.current.scrollLeft);
+    }
+  };
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!isDown || !scrollRef.current) return;
+    e.preventDefault();
+    const x = e.pageX - scrollRef.current.offsetLeft;
+    const walk = (x - startX) * 1.5;
+    scrollRef.current.scrollLeft = scrollLeft - walk;
+    handleScroll();
+  };
+
   return (
-    <section className="w-full bg-white py-24 px-4 flex justify-center relative overflow-hidden">
+    <section id="reviews" className="w-full bg-white py-16 md:py-24 flex flex-col items-center overflow-hidden relative">
       
-      {/* SELO CERNALHA - POSICIONAMENTO CORRIGIDO
-          - Se quiseres subir MAIS, diminui o valor de 420px (ex: 380px).
-          - Se quiseres descer, aumenta (ex: 450px).
-      */}
+      {/* SELO CERNALHA (DESKTOP) */}
       <div 
-        className="absolute hidden xl:block z-20 pointer-events-none"
-        style={{ 
-          left: 'calc(50% - 640px)', 
-          top: '50px', 
-          transform: 'translateX(-50%) rotate(-15deg)' 
-        }}
+        className="absolute hidden xl:block z-0 pointer-events-none opacity-5"
+        style={{ left: '2%', top: '5%', transform: 'rotate(-15deg)' }}
       >
-        <img 
-          src={iconeCarta} 
-          alt="Selo Cernelha" 
-          className="w-64 h-auto"
-        />
+        <img src={iconeCarta} alt="Selo Cernelha" className="w-64 h-auto" />
       </div>
 
-      <div className="max-w-7xl w-full z-10">
-        
-        {/* CABEÇALHO */}
-        <div className="text-center mb-16 flex flex-col items-center">
-          <span 
-            style={{ ...montserrat, fontSize: '11px' }} 
-            className="text-[#05402d] font-bold tracking-[0.6em] uppercase mb-4"
-          >
-            R E V I E W S
-          </span>
-          
-          <h2 
-            style={{ ...cinzel, fontSize: '34px' }} 
-            className="text-[#69151f] leading-tight uppercase mt-2 mb-6"
-          >
-            Comentários
-          </h2>
-
-          <div className="flex items-center justify-center gap-6 mb-8">
-            <div className="w-12 h-[1px] bg-[#05402d]"></div>
-            <span className="text-2xl">🐂</span>
-            <div className="w-12 h-[1px] bg-[#05402d]"></div>
-          </div>
-
-          <p 
-            style={{ ...montserrat, fontSize: '11px' }} 
-            className="text-[#69151f] font-medium tracking-wide uppercase"
-          >
-            Alguns comentários e avaliações deixados pelos nossos clientes.
-          </p>
+      {/* CABEÇALHO CENTRALIZADO */}
+      <div className="text-center mb-12 px-6 z-10 w-full flex flex-col items-center">
+        <span style={montserrat} className="text-[#05402d] text-[10px] font-bold tracking-[0.5em] uppercase mb-3">
+          Reviews
+        </span>
+        <h2 style={cinzel} className="text-[#69151f] text-3xl md:text-5xl uppercase mb-4">
+          Comentários
+        </h2>
+        <div className="flex items-center justify-center gap-4 mb-6">
+          <div className="w-12 h-[1px] bg-[#05402d]/30"></div>
+          <img src={imgTouro} alt="Touro" className="h-7 w-auto mix-blend-multiply" />
+          <div className="w-12 h-[1px] bg-[#05402d]/30"></div>
         </div>
+        <p style={montserrat} className="text-[#69151f] text-[10px] md:text-[11px] font-bold tracking-widest uppercase opacity-80 max-w-sm mx-auto">
+          Alguns comentários e avaliações deixados pelos nossos clientes.
+        </p>
+      </div>
 
-        {/* GRID DE REVIEWS */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 relative">
+      {/* ÁREA DOS COMENTÁRIOS */}
+      <div className="w-full flex justify-center">
+        <div 
+          ref={scrollRef}
+          onScroll={handleScroll}
+          onMouseDown={handleMouseDown}
+          onMouseUp={() => setIsDown(false)}
+          onMouseLeave={() => setIsDown(false)}
+          onMouseMove={handleMouseMove}
+          className="
+            flex md:grid md:grid-cols-4 gap-6 md:gap-8
+            overflow-x-auto md:overflow-visible
+            snap-x snap-mandatory md:snap-none
+            px-[10vw] md:px-10 pb-12 no-scrollbar
+            cursor-grab active:cursor-grabbing
+            w-full max-w-7xl
+          "
+        >
           {avaliacoes.map((item, index) => (
             <div 
               key={index} 
-              style={{ backgroundColor: '#f1efea' }} 
-              className="p-8 flex flex-col items-center text-center rounded-lg shadow-sm h-full"
+              className={`
+                min-w-[80vw] md:min-w-0 bg-[#f1efea] p-8 md:p-6 flex flex-col items-center text-center rounded-sm shadow-lg transition-all duration-500
+                ${index === activeIndex ? 'scale-105 md:scale-100 z-10 opacity-100' : 'scale-95 md:scale-100 opacity-40 blur-[0.5px] md:blur-0 md:opacity-100'}
+              `}
             >
-              <div className="mb-6">
+              {/* AVATAR */}
+              <div className="mb-6 pointer-events-none">
                 {item.img ? (
-                  <img src={item.img} alt={item.nome} className="w-16 h-16 rounded-full object-cover shadow-sm border-2 border-white" />
+                  <img src={item.img} alt={item.nome} className="w-16 h-16 rounded-full object-cover border-2 border-white shadow-md mx-auto" />
                 ) : (
-                  <div className={`w-16 h-16 rounded-full ${item.corFundo} flex items-center justify-center text-white text-2xl font-bold shadow-sm`}>
+                  <div className={`w-16 h-16 rounded-full ${item.corFundo} flex items-center justify-center text-white text-xl font-bold shadow-md mx-auto`}>
                     {item.inicial}
                   </div>
                 )}
               </div>
 
-              <div className="flex gap-1 mb-6 text-yellow-500 text-xs">
+              {/* ESTRELAS */}
+              <div className="flex gap-1 justify-center mb-6 text-yellow-500 text-[10px]">
                 {[...Array(5)].map((_, i) => (
                   <span key={i}>{i < item.estrelas ? "★" : "☆"}</span>
                 ))}
               </div>
 
-              <p 
-                style={{ ...montserrat, fontSize: '10px' }} 
-                className="text-[#05402d] leading-relaxed mb-8 flex-1 italic"
-              >
+              {/* TEXTO */}
+              <p style={montserrat} className="text-[#05402d] text-[12px] md:text-[11px] leading-relaxed mb-8 flex-1 italic opacity-90">
                 "{item.texto}"
               </p>
 
-              <div className="mt-auto">
-                <h4 
-                  style={{ ...montserrat, fontSize: '11px' }} 
-                  className="text-[#69151f] font-bold uppercase tracking-tight"
-                >
+              {/* RODAPÉ DO CARD */}
+              <div className="mt-auto pointer-events-none">
+                <h4 style={montserrat} className="text-[#69151f] text-[12px] font-bold uppercase tracking-tight">
                   {item.nome}
                 </h4>
-                <p 
-                  style={{ ...montserrat, fontSize: '11px' }} 
-                  className="text-[#69151f] opacity-70 uppercase tracking-widest mt-1"
-                >
+                <p style={montserrat} className="text-[#69151f] text-[10px] opacity-60 uppercase tracking-widest mt-1 font-medium">
                   {item.tipo}
                 </p>
               </div>
             </div>
           ))}
         </div>
-
-        <div className="flex justify-center gap-3 mt-12">
-          <div className="w-2 h-2 rounded-full bg-[#69151f]"></div>
-          <div className="w-2 h-2 rounded-full bg-[#69151f]/20"></div>
-          <div className="w-2 h-2 rounded-full bg-[#69151f]/20"></div>
-        </div>
       </div>
+
+      {/* PONTOS DE NAVEGAÇÃO (MOBILE) */}
+      <div className="flex justify-center gap-3 mt-4 md:hidden">
+        {avaliacoes.map((_, idx) => (
+          <div 
+            key={idx} 
+            className={`h-1.5 rounded-full transition-all duration-300 ${idx === activeIndex ? 'bg-[#69151f] w-6' : 'bg-gray-300 w-1.5'}`}
+          ></div>
+        ))}
+      </div>
+
+      <style>{`
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+      `}</style>
     </section>
   );
 }
